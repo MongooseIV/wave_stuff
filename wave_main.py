@@ -3,17 +3,50 @@ from machine import Pin, I2C, ADC, PWM
 from ssd1306 import SSD1306_I2C
 import math
 from time import sleep
-from note_list.py import Eb4
 
 class note:
     def __init__(self, name, freq):
         self.name = name
         self.freq = freq
+# note_list = [C4 = note("C4", 261),]
+C4 = note("C4", 262)
+Db4 = note("Db4", 277)
+D4 = note("D4", 294)
+Eb4 = note("Eb4", 311)
+E4 = note("E4", 330)
+F4 = note("F4", 350)
+Gb4 = note("Gb4", 370)
+G4 = note("G4", 392)
+Ab4 = note("Ab4", 415)
+A4 = note("A4", 440)
+Bb4 = note("Bb4", 466)
+B4 = note("B4", 494)
+C5 = note("C5", 523)
+Db5 = note("Db5", 554)
+D5 = note("D5", 587)
+Eb5 = note("Eb5", 622)
 w = 128 # width of screen
 h = 32 # height of screen
 
+def getFrequency(note, A4=440): #credit for function to Charles Grassin
+    notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
+
+    octave = int(note[2]) if len(note) == 3 else int(note[1])
+        
+    keyNumber = notes.index(note[0:-1]);
+    
+    if (keyNumber < 3) :
+        keyNumber = keyNumber + 12 + ((octave - 1) * 12) + 1; 
+    else:
+        keyNumber = keyNumber + ((octave - 1) * 12) + 1; 
+
+    return A4 * 2** ((keyNumber- 49) / 12)
+
 # pin assignments
 buzzer=PWM(Pin(7))
+b2=PWM(Pin(25))
+b3=PWM(Pin(26))
+b4=PWM(Pin(27))
 i2c = I2C(0, scl=Pin(1), sda = Pin(0), freq = 200000)
 addr = i2c.scan()[0]
 oled = SSD1306_I2C(w,h,i2c, addr)
@@ -57,19 +90,35 @@ def toggle_wave(wave): # changes the wave from sin to cos
 def start_up_noise():
     ''' plays a windows startup noise '''
     buzzer.duty_u16(1000)
-    buzzer.freq(Eb4.freq) #Eb
+    b2.duty_u16(1000)
+    b3.duty_u16(1000)
+    b4.duty_u16(1000)
+    buzzer.freq(round(getFrequency("D#5"))) #Eb
+    b2.freq(round(getFrequency("A#3")))
+    b3.freq(round(getFrequency("C3")))
+    b4.freq(round(getFrequency("D#2"))) 
     sleep(0.375)
-    buzzer.freq(311) #Eb
+    buzzer.freq(round(getFrequency("D#4"))) #Eb
     sleep(0.25)
-    buzzer.freq(932) #Bb
+    buzzer.freq(round(getFrequency("A#4"))) #Bb
+    b2.freq(round(getFrequency("A#3")))
+    b3.freq(round(getFrequency("D#3")))
+    b4.freq(round(getFrequency("G#2"))) 
     sleep(0.25)
-    buzzer.freq(831) #Ab
+    buzzer.freq(round(getFrequency("G#4"))) #Ab
     sleep(0.25)
-    buzzer.freq(622) #Eb
+    buzzer.freq(round(getFrequency("D#5"))) #Eb
+    b2.freq(round(getFrequency("D#3")))
+    b3.freq(round(getFrequency("A#2")))
+    b4.freq(round(getFrequency("D#2"))) 
     sleep(0.25)
-    buzzer.freq(466) #Bb
+    buzzer.freq(round(getFrequency("A#4"))) #Bb
     sleep(0.375)
     buzzer.duty_u16(0)
+    sleep(0.5)
+    b2.duty_u16(0)
+    b3.duty_u16(0)
+    b4.duty_u16(0)
     
 
 start_up_noise()
