@@ -13,6 +13,7 @@ i2c = I2C(0, scl=Pin(1), sda = Pin(0), freq = 200000)
 addr = i2c.scan()[0]
 oled = SSD1306_I2C(w,h,i2c, addr)
 adc = ADC(Pin(26))
+pr_adc = ADC(Pin(27))
 button = Pin(20, Pin.IN, Pin.PULL_DOWN)
 r_led = Pin(16, Pin.OUT)
 u_led = Pin(14, Pin.OUT)
@@ -71,6 +72,7 @@ while True:
     x2=0
     y2=0
     for x in range(0, w):
+
         if button.value(): #checks if the button is pressed
 #             wave_type=toggle_wave(wave_type) # switches the type of wave
             if buzzer_on:
