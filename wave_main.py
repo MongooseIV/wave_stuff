@@ -4,27 +4,6 @@ from ssd1306 import SSD1306_I2C
 import math
 from time import sleep
 
-class note:
-    def __init__(self, name, freq):
-        self.name = name
-        self.freq = freq
-# note_list = [C4 = note("C4", 261),]
-C4 = note("C4", 262)
-Db4 = note("Db4", 277)
-D4 = note("D4", 294)
-Eb4 = note("Eb4", 311)
-E4 = note("E4", 330)
-F4 = note("F4", 350)
-Gb4 = note("Gb4", 370)
-G4 = note("G4", 392)
-Ab4 = note("Ab4", 415)
-A4 = note("A4", 440)
-Bb4 = note("Bb4", 466)
-B4 = note("B4", 494)
-C5 = note("C5", 523)
-Db5 = note("Db5", 554)
-D5 = note("D5", 587)
-Eb5 = note("Eb5", 622)
 w = 128 # width of screen
 h = 32 # height of screen
 
