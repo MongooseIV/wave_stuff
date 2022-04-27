@@ -18,7 +18,6 @@ r_led = Pin(16, Pin.OUT)
 u_led = Pin(14, Pin.OUT)
 g_led = Pin(15, Pin.OUT)
 
-
 # define vars
 x=0
 y=0
@@ -50,6 +49,7 @@ def toggle_wave(wave): # changes the wave from sin to cos
     return wave #returns the correct value
 
 def start_up_noise():
+    ''' plays a windows startup noise '''
     buzzer.duty_u16(1000)
     buzzer.freq(622) #Eb
     sleep(0.375)
@@ -110,7 +110,6 @@ while True:
     
     
     # TODO: 
-    #       startup sound
     #       make pretty
     #       power
 
