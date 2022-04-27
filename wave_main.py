@@ -3,12 +3,17 @@ from machine import Pin, I2C, ADC, PWM
 from ssd1306 import SSD1306_I2C
 import math
 from time import sleep
+from note_list.py import Eb4
 
+class note:
+    def __init__(self, name, freq):
+        self.name = name
+        self.freq = freq
 w = 128 # width of screen
 h = 32 # height of screen
-buzzer=PWM(Pin(13))
 
 # pin assignments
+buzzer=PWM(Pin(7))
 i2c = I2C(0, scl=Pin(1), sda = Pin(0), freq = 200000)
 addr = i2c.scan()[0]
 oled = SSD1306_I2C(w,h,i2c, addr)
@@ -52,7 +57,7 @@ def toggle_wave(wave): # changes the wave from sin to cos
 def start_up_noise():
     ''' plays a windows startup noise '''
     buzzer.duty_u16(1000)
-    buzzer.freq(622) #Eb
+    buzzer.freq(Eb4.freq) #Eb
     sleep(0.375)
     buzzer.freq(311) #Eb
     sleep(0.25)
@@ -82,7 +87,7 @@ while True:
                 g_led.value(1)
             else:
                 buzzer_on=True
-                buzzer.duty_u16(500)
+                buzzer.duty_u16(1000)
                 g_led.value(0)
                 u_led.value(1)
             sleep(0.5)
