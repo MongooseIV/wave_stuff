@@ -9,7 +9,7 @@ h = 32 # height of screen
 
 #  test
 
-def getFrequency(note, A4=440): #credit for function to Charles Grassin
+def get_frequency(note, A4=440): #credit for function to Charles Grassin
     notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
 
     octave = int(note[2]) if len(note) == 3 else int(note[1])
@@ -79,28 +79,28 @@ def start_up_noise():
     ''' plays a windows startup noise '''
     for i in buz_lst:
         i.duty_u16(500)
-    buzzer.freq(round(getFrequency("D#5")))
-    b2.freq(round(getFrequency("A#3")))
-    b3.freq(round(getFrequency("C3")))
-    b4.freq(round(getFrequency("D#2"))) 
+    buzzer.freq(round(get_frequency("D#5")))
+    b2.freq(round(get_frequency("A#3")))
+    b3.freq(round(get_frequency("C3")))
+    b4.freq(round(get_frequency("D#2"))) 
     sleep(0.375)
-    buzzer.freq(round(getFrequency("D#4")))
+    buzzer.freq(round(get_frequency("D#4")))
     sleep(0.25)
     for i in buz_lst:
         i.duty_u16(1000)
-    buzzer.freq(round(getFrequency("A#4"))) 
-    b2.freq(round(getFrequency("A#3")))
-    b3.freq(round(getFrequency("D#3")))
-    b4.freq(round(getFrequency("G#2"))) 
+    buzzer.freq(round(get_frequency("A#4"))) 
+    b2.freq(round(get_frequency("A#3")))
+    b3.freq(round(get_frequency("D#3")))
+    b4.freq(round(get_frequency("G#2"))) 
     sleep(0.25)
-    buzzer.freq(round(getFrequency("G#4"))) 
+    buzzer.freq(round(get_frequency("G#4"))) 
     sleep(0.25)
-    buzzer.freq(round(getFrequency("D#5"))) 
-    b2.freq(round(getFrequency("D#3")))
-    b3.freq(round(getFrequency("A#2")))
-    b4.freq(round(getFrequency("D#2"))) 
+    buzzer.freq(round(get_frequency("D#5"))) 
+    b2.freq(round(get_frequency("D#3")))
+    b3.freq(round(get_frequency("A#2")))
+    b4.freq(round(get_frequency("D#2"))) 
     sleep(0.25)
-    buzzer.freq(round(getFrequency("A#4"))) #Bb
+    buzzer.freq(round(get_frequency("A#4"))) #Bb
     sleep(0.3)
     for i in buz_lst:
         i.duty_u16(750)
