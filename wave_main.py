@@ -24,15 +24,15 @@ def get_frequency(note, A4=440): #credit for function to Charles Grassin
     return A4 * 2** ((keyNumber- 49) / 12)
 
 # pin assignments
-buzzer=PWM(Pin(7))
+buzzer=PWM(Pin(22))
 b2=PWM(Pin(2))
 b3=PWM(Pin(3))
 b4=PWM(Pin(4))
 i2c = I2C(0, scl=Pin(1), sda = Pin(0), freq = 200000)
 addr = i2c.scan()[0]
 oled = SSD1306_I2C(w,h,i2c, addr)
-photo_res = ADC(Pin(26))
-pr_adc = ADC(Pin(27))
+photo_res = ADC(Pin(27))
+adc = ADC(Pin(26))
 button = Pin(20, Pin.IN, Pin.PULL_DOWN)
 r_led = Pin(16, Pin.OUT)
 u_led = Pin(14, Pin.OUT)
@@ -47,6 +47,7 @@ y2=0
 wave_type="sin"
 buzzer_on = False
 buz_lst = [buzzer, b2, b3, b4]
+change_light=False
 
 # reset led
 r_led.value(0)
@@ -56,8 +57,9 @@ u_led.value(1)
 #method definitions
 
 def read_light(): 
-    light = photoRes.read_u16()
-    light = round(light/65535*1000, 2)
+    light = photo_res.read_u16()
+    light = round(light/65535*1000)
+#     print(light)
     return light
 
 def normalize(a, b): # changes the hertz value so it is compatible with oled screen size
@@ -132,11 +134,11 @@ while True:
                 g_led.value(1)
             else:
                 buzzer_on=True
-                buzzer.duty_u16(read_light()) # readlight should give number between 0 and 1000 ( photoresistor set volume :) )
                 g_led.value(0)
                 u_led.value(1)
             sleep(0.5)
-    
+        if buzzer_on: buzzer.duty_u16(read_light()) # readlight should give number between 0 and 1000 ( photoresistor set volume :) )
+        
         hertz = round((adc.read_u16()/2340.53571429)) # turns the potentiometer output into 2-28 hertz
         if hertz<2: hertz=2 # sets the minumum hertz value
         hertz_as_degrees = math.degrees(math.pi * hertz) # turns the hertz into degrees of circle
