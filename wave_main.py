@@ -56,9 +56,9 @@ u_led.value(1)
 #method definitions
 
 def readLight(): 
-	light = photoRes.read_u16()
-	light = round(light/65535*100, 2)
-	return light
+    light = photoRes.read_u16()
+    light = round(light/65535*100, 2)
+    return light
 
 def normalize(a, b): # changes the hertz value so it is compatible with oled screen size
     return float(b/a)
