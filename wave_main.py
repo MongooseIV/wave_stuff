@@ -31,12 +31,13 @@ b4=PWM(Pin(4))
 i2c = I2C(0, scl=Pin(1), sda = Pin(0), freq = 200000)
 addr = i2c.scan()[0]
 oled = SSD1306_I2C(w,h,i2c, addr)
-adc = ADC(Pin(26))
+photoRes = ADC(Pin(26))
 pr_adc = ADC(Pin(27))
 button = Pin(20, Pin.IN, Pin.PULL_DOWN)
 r_led = Pin(16, Pin.OUT)
 u_led = Pin(14, Pin.OUT)
 g_led = Pin(15, Pin.OUT)
+
 
 # define vars
 x=0
@@ -47,14 +48,18 @@ wave_type="sin"
 buzzer_on = False
 buz_lst = [buzzer, b2, b3, b4]
 
-
 # reset led
 r_led.value(0)
 g_led.value(0)
 u_led.value(1)
 
-
 #method definitions
+
+def readLight(): 
+	light = photoRes.read_u16()
+	light = round(light/65535*100, 2)
+	return light
+
 def normalize(a, b): # changes the hertz value so it is compatible with oled screen size
     return float(b/a)
 
