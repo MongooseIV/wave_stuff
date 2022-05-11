@@ -132,7 +132,7 @@ while True:
                 g_led.value(1)
             else:
                 buzzer_on=True
-                buzzer.duty_u16(readLight()) # readlight should give number between 0 and 1000
+                buzzer.duty_u16(readLight()) # readlight should give number between 0 and 1000 ( photoresistor set volume :) )
                 g_led.value(0)
                 u_led.value(1)
             sleep(0.5)
