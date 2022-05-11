@@ -23,9 +23,9 @@ def getFrequency(note, A4=440): #credit for function to Charles Grassin
 
 # pin assignments
 buzzer=PWM(Pin(7))
-b2=PWM(Pin(25))
-b3=PWM(Pin(26))
-b4=PWM(Pin(27))
+b2=PWM(Pin(2))
+b3=PWM(Pin(3))
+b4=PWM(Pin(4))
 i2c = I2C(0, scl=Pin(1), sda = Pin(0), freq = 200000)
 addr = i2c.scan()[0]
 oled = SSD1306_I2C(w,h,i2c, addr)
@@ -43,6 +43,8 @@ x2=0
 y2=0
 wave_type="sin"
 buzzer_on = False
+buz_lst = [buzzer, b2, b3, b4]
+
 
 # reset led
 r_led.value(0)
@@ -68,33 +70,41 @@ def toggle_wave(wave): # changes the wave from sin to cos
 
 def start_up_noise():
     ''' plays a windows startup noise '''
-    buzzer.duty_u16(1000)
-    b2.duty_u16(1000)
-    b3.duty_u16(1000)
-    b4.duty_u16(1000)
-    buzzer.freq(round(getFrequency("D#5"))) #Eb
+    for i in buz_lst:
+        i.duty_u16(500)
+    buzzer.freq(round(getFrequency("D#5")))
     b2.freq(round(getFrequency("A#3")))
     b3.freq(round(getFrequency("C3")))
     b4.freq(round(getFrequency("D#2"))) 
     sleep(0.375)
-    buzzer.freq(round(getFrequency("D#4"))) #Eb
+    buzzer.freq(round(getFrequency("D#4")))
     sleep(0.25)
-    buzzer.freq(round(getFrequency("A#4"))) #Bb
+    for i in buz_lst:
+        i.duty_u16(1000)
+    buzzer.freq(round(getFrequency("A#4"))) 
     b2.freq(round(getFrequency("A#3")))
     b3.freq(round(getFrequency("D#3")))
     b4.freq(round(getFrequency("G#2"))) 
     sleep(0.25)
-    buzzer.freq(round(getFrequency("G#4"))) #Ab
+    buzzer.freq(round(getFrequency("G#4"))) 
     sleep(0.25)
-    buzzer.freq(round(getFrequency("D#5"))) #Eb
+    buzzer.freq(round(getFrequency("D#5"))) 
     b2.freq(round(getFrequency("D#3")))
     b3.freq(round(getFrequency("A#2")))
     b4.freq(round(getFrequency("D#2"))) 
     sleep(0.25)
     buzzer.freq(round(getFrequency("A#4"))) #Bb
-    sleep(0.375)
+    sleep(0.3)
+    for i in buz_lst:
+        i.duty_u16(750)
+    sleep(0.3)
+    for i in buz_lst:
+        i.duty_u16(500)
+    sleep(0.3)
+    for i in buz_lst:
+        i.duty_u16(200)
+    sleep(0.3)
     buzzer.duty_u16(0)
-    sleep(0.5)
     b2.duty_u16(0)
     b3.duty_u16(0)
     b4.duty_u16(0)
