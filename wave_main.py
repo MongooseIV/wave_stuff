@@ -7,7 +7,9 @@ from time import sleep
 w = 128 # width of screen
 h = 32 # height of screen
 
-def getFrequency(note, A4=440): #credit for function to Charles Grassin
+#  test
+
+def get_frequency(note, A4=440): #credit for function to Charles Grassin
     notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
 
     octave = int(note[2]) if len(note) == 3 else int(note[1])
@@ -29,12 +31,13 @@ b4=PWM(Pin(4))
 i2c = I2C(0, scl=Pin(1), sda = Pin(0), freq = 200000)
 addr = i2c.scan()[0]
 oled = SSD1306_I2C(w,h,i2c, addr)
-adc = ADC(Pin(26))
+photo_res = ADC(Pin(26))
 pr_adc = ADC(Pin(27))
 button = Pin(20, Pin.IN, Pin.PULL_DOWN)
 r_led = Pin(16, Pin.OUT)
 u_led = Pin(14, Pin.OUT)
 g_led = Pin(15, Pin.OUT)
+
 
 # define vars
 x=0
@@ -45,14 +48,18 @@ wave_type="sin"
 buzzer_on = False
 buz_lst = [buzzer, b2, b3, b4]
 
-
 # reset led
 r_led.value(0)
 g_led.value(0)
 u_led.value(1)
 
-
 #method definitions
+
+def read_light(): 
+    light = photoRes.read_u16()
+    light = round(light/65535*1000, 2)
+    return light
+
 def normalize(a, b): # changes the hertz value so it is compatible with oled screen size
     return float(b/a)
 
@@ -72,28 +79,28 @@ def start_up_noise():
     ''' plays a windows startup noise '''
     for i in buz_lst:
         i.duty_u16(500)
-    buzzer.freq(round(getFrequency("D#5")))
-    b2.freq(round(getFrequency("A#3")))
-    b3.freq(round(getFrequency("C3")))
-    b4.freq(round(getFrequency("D#2"))) 
+    buzzer.freq(round(get_frequency("D#5")))
+    b2.freq(round(get_frequency("A#3")))
+    b3.freq(round(get_frequency("C3")))
+    b4.freq(round(get_frequency("D#2"))) 
     sleep(0.375)
-    buzzer.freq(round(getFrequency("D#4")))
+    buzzer.freq(round(get_frequency("D#4")))
     sleep(0.25)
     for i in buz_lst:
         i.duty_u16(1000)
-    buzzer.freq(round(getFrequency("A#4"))) 
-    b2.freq(round(getFrequency("A#3")))
-    b3.freq(round(getFrequency("D#3")))
-    b4.freq(round(getFrequency("G#2"))) 
+    buzzer.freq(round(get_frequency("A#4"))) 
+    b2.freq(round(get_frequency("A#3")))
+    b3.freq(round(get_frequency("D#3")))
+    b4.freq(round(get_frequency("G#2"))) 
     sleep(0.25)
-    buzzer.freq(round(getFrequency("G#4"))) 
+    buzzer.freq(round(get_frequency("G#4"))) 
     sleep(0.25)
-    buzzer.freq(round(getFrequency("D#5"))) 
-    b2.freq(round(getFrequency("D#3")))
-    b3.freq(round(getFrequency("A#2")))
-    b4.freq(round(getFrequency("D#2"))) 
+    buzzer.freq(round(get_frequency("D#5"))) 
+    b2.freq(round(get_frequency("D#3")))
+    b3.freq(round(get_frequency("A#2")))
+    b4.freq(round(get_frequency("D#2"))) 
     sleep(0.25)
-    buzzer.freq(round(getFrequency("A#4"))) #Bb
+    buzzer.freq(round(get_frequency("A#4"))) #Bb
     sleep(0.3)
     for i in buz_lst:
         i.duty_u16(750)
@@ -125,7 +132,7 @@ while True:
                 g_led.value(1)
             else:
                 buzzer_on=True
-                buzzer.duty_u16(1000)
+                buzzer.duty_u16(read_light()) # readlight should give number between 0 and 1000 ( photoresistor set volume :) )
                 g_led.value(0)
                 u_led.value(1)
             sleep(0.5)
@@ -139,20 +146,15 @@ while True:
             y = int(math.sin(rads_x) * (h/2)) # sets y value to sin output
         elif wave_type=="cos":
             y = int(math.cos(rads_x) * (h/2)) # sets y value to cos output
-        oled.pixel(x,y+16,1) # draws waave
+        oled.pixel(x,y+16,1) # draws wave
         oled.line(x,y+16,x2,y2+16,1)
         x2=x
         y2=y
         oled.show()
         adjusted_hertz = int(hertz*31.4)
-#         print(f"{hertz}, {adjusted_hertz}")
-#         print(adc.read_u16())
-#         print(f"{x}, {y}")
         buzzer.freq(adjusted_hertz)
         sleep(0.005)
     oled.fill(0)
-    
-    
     
     # TODO: 
     #       make pretty
