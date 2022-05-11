@@ -57,7 +57,7 @@ u_led.value(1)
 
 def readLight(): 
     light = photoRes.read_u16()
-    light = round(light/65535*100, 2)
+    light = round(light/65535*1000, 2)
     return light
 
 def normalize(a, b): # changes the hertz value so it is compatible with oled screen size
@@ -132,7 +132,7 @@ while True:
                 g_led.value(1)
             else:
                 buzzer_on=True
-                buzzer.duty_u16(1000)
+                buzzer.duty_u16(readLight()) # readlight should give number between 0 and 1000
                 g_led.value(0)
                 u_led.value(1)
             sleep(0.5)
