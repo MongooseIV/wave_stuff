@@ -7,6 +7,8 @@ from time import sleep
 w = 128 # width of screen
 h = 32 # height of screen
 
+#  test
+
 def getFrequency(note, A4=440): #credit for function to Charles Grassin
     notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
 
