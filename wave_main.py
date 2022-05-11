@@ -31,7 +31,7 @@ b4=PWM(Pin(4))
 i2c = I2C(0, scl=Pin(1), sda = Pin(0), freq = 200000)
 addr = i2c.scan()[0]
 oled = SSD1306_I2C(w,h,i2c, addr)
-photoRes = ADC(Pin(26))
+photo_res = ADC(Pin(26))
 pr_adc = ADC(Pin(27))
 button = Pin(20, Pin.IN, Pin.PULL_DOWN)
 r_led = Pin(16, Pin.OUT)
@@ -55,7 +55,7 @@ u_led.value(1)
 
 #method definitions
 
-def readLight(): 
+def read_light(): 
     light = photoRes.read_u16()
     light = round(light/65535*1000, 2)
     return light
@@ -132,7 +132,7 @@ while True:
                 g_led.value(1)
             else:
                 buzzer_on=True
-                buzzer.duty_u16(readLight()) # readlight should give number between 0 and 1000 ( photoresistor set volume :) )
+                buzzer.duty_u16(read_light()) # readlight should give number between 0 and 1000 ( photoresistor set volume :) )
                 g_led.value(0)
                 u_led.value(1)
             sleep(0.5)
