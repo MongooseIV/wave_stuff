@@ -141,20 +141,15 @@ while True:
             y = int(math.sin(rads_x) * (h/2)) # sets y value to sin output
         elif wave_type=="cos":
             y = int(math.cos(rads_x) * (h/2)) # sets y value to cos output
-        oled.pixel(x,y+16,1) # draws waave
+        oled.pixel(x,y+16,1) # draws wave
         oled.line(x,y+16,x2,y2+16,1)
         x2=x
         y2=y
         oled.show()
         adjusted_hertz = int(hertz*31.4)
-#         print(f"{hertz}, {adjusted_hertz}")
-#         print(adc.read_u16())
-#         print(f"{x}, {y}")
         buzzer.freq(adjusted_hertz)
         sleep(0.005)
     oled.fill(0)
-    
-    
     
     # TODO: 
     #       make pretty
