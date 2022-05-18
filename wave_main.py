@@ -142,8 +142,3 @@ while True:
         buzzer.freq(adjusted_hertz)
         sleep(0.005)
     oled.fill(0)
-    
-    # TODO: 
-    #       make pretty
-    #       power
-
