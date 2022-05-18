@@ -7,8 +7,6 @@ from time import sleep
 w = 128 # width of screen
 h = 32 # height of screen
 
-#  test
-
 def get_frequency(note, A4=440): #credit for function to Charles Grassin
     notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
 
@@ -65,17 +63,6 @@ def read_light():
 def normalize(a, b): # changes the hertz value so it is compatible with oled screen size
     return float(b/a)
 
-def toggle_wave(wave): # changes the wave from sin to cos
-    print(wave)
-    if wave== "sin": # when wave is cos, g_led is on
-        wave="cos"
-        u_led.value(0)
-        g_led.value(1)
-    elif wave == "cos": # when wave is sin, u_led is on
-        wave="sin"
-        g_led.value(0)
-        u_led.value(1)
-    return wave #returns the correct value
 
 def start_up_noise():
     ''' plays a windows startup noise '''
@@ -126,7 +113,6 @@ while True:
     for x in range(0, w):
 
         if button.value(): #checks if the button is pressed
-#             wave_type=toggle_wave(wave_type) # switches the type of wave
             if buzzer_on:
                 buzzer_on=False
                 buzzer.duty_u16(0)
