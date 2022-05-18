@@ -7,20 +7,6 @@ from time import sleep
 w = 128 # width of screen
 h = 32 # height of screen
 
-def get_frequency(note, A4=440): #credit for function to Charles Grassin
-    notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
-
-    octave = int(note[2]) if len(note) == 3 else int(note[1])
-        
-    keyNumber = notes.index(note[0:-1]);
-    
-    if (keyNumber < 3) :
-        keyNumber = keyNumber + 12 + ((octave - 1) * 12) + 1; 
-    else:
-        keyNumber = keyNumber + ((octave - 1) * 12) + 1; 
-
-    return A4 * 2** ((keyNumber- 49) / 12)
-
 # pin assignments
 buzzer=PWM(Pin(22))
 b2=PWM(Pin(2))
@@ -53,6 +39,19 @@ g_led.value(0)
 u_led.value(1)
 
 #method definitions
+def get_frequency(note, A4=440): #credit for function to Charles Grassin
+    notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
+
+    octave = int(note[2]) if len(note) == 3 else int(note[1])
+        
+    keyNumber = notes.index(note[0:-1]);
+    
+    if (keyNumber < 3) :
+        keyNumber = keyNumber + 12 + ((octave - 1) * 12) + 1; 
+    else:
+        keyNumber = keyNumber + ((octave - 1) * 12) + 1; 
+
+    return A4 * 2** ((keyNumber- 49) / 12)
 
 def read_light(): 
     light = photo_res.read_u16()
